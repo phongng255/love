@@ -70,6 +70,21 @@ canvas {
   from { opacity: 0.2; transform: scale(1); }
   to { opacity: 1; transform: scale(1.6); }
 }
+
+/* 🌼 Hoa rơi */
+.flower {
+  position: fixed;
+  top: -10px;
+  pointer-events: none;
+  animation: fall linear forwards;
+}
+
+@keyframes fall {
+  to {
+    transform: translateY(110vh) rotate(360deg);
+    opacity: 0.9;
+  }
+}
 </style>
 </head>
 
@@ -94,6 +109,27 @@ function createStars() {
 }
 createStars();
 
+/* 🌼 Hoa rơi */
+function createFlower() {
+  const flower = document.createElement("div");
+  flower.className = "flower";
+
+  const flowers = ["🌼","💮","✨"];
+  flower.innerHTML = flowers[Math.floor(Math.random() * flowers.length)];
+
+  flower.style.left = Math.random() * 100 + "vw";
+  flower.style.animationDuration = 6 + Math.random() * 5 + "s";
+  flower.style.fontSize = 18 + Math.random() * 18 + "px";
+  flower.style.opacity = 0.8;
+
+  document.body.appendChild(flower);
+
+  setTimeout(() => {
+    flower.remove();
+  }, 11000);
+}
+setInterval(createFlower, 500);
+
 /* ====== HEART PARTICLE SYSTEM ====== */
 
 var settings = {
@@ -107,7 +143,6 @@ var settings = {
 };
 
 (function() {
-  var b = 0;
   var c = ["ms", "moz", "webkit", "o"];
   for (var a = 0; a < c.length && !window.requestAnimationFrame; ++a) {
     window.requestAnimationFrame = window[c[a] + "RequestAnimationFrame"];
@@ -243,9 +278,10 @@ ParticlePool.prototype.draw = function(context,image){
     }
     context.closePath();
 
+    /* 💛 TIM VÀNG PASTEL */
     context.shadowBlur = 25;
-    context.shadowColor = "#ff4da6";
-    context.fillStyle = "#ff2e88";
+    context.shadowColor = "#ffe699";
+    context.fillStyle = "#ffd966";
     context.fill();
 
     var image = new Image();
