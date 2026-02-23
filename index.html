@@ -79,6 +79,21 @@ canvas {
   animation: fall linear forwards;
 }
 
+/* 🎀 Hello Kitty rơi */
+.kitty {
+  position: fixed;
+  top: -120px;
+  pointer-events: none;
+  animation: fallKitty linear forwards;
+}
+
+@keyframes fallKitty {
+  to {
+    transform: translateY(110vh) rotate(360deg);
+    opacity: 0.95;
+  }
+}
+
 @keyframes fall {
   to {
     transform: translateY(110vh) rotate(360deg);
@@ -320,6 +335,34 @@ ParticlePool.prototype.draw = function(context,image){
   },10);
 
 })(document.getElementById("pinkboard"));
+
+/* 🎀 NHIỀU HELLO KITTY RƠI */
+
+const kittyImages = [
+  "https://pngimg.com/uploads/hello_kitty/hello_kitty_PNG47.png"
+];
+
+function createKitty() {
+  const kitty = document.createElement("img");
+  kitty.className = "kitty";
+
+  // chọn ngẫu nhiên 1 hình
+  kitty.src = kittyImages[Math.floor(Math.random() * kittyImages.length)];
+
+  kitty.style.left = Math.random() * 100 + "vw";
+  kitty.style.animationDuration = 6 + Math.random() * 6 + "s";
+  kitty.style.width = 40 + Math.random() * 40 + "px";
+
+  document.body.appendChild(kitty);
+
+  setTimeout(() => {
+    kitty.remove();
+  }, 12000);
+}
+
+// tăng mật độ rơi
+setInterval(createKitty, 600);
+
 </script>
 
 </body>
