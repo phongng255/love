@@ -34,17 +34,25 @@ canvas {
   position: relative;
 }
 
-/* Title */
+/* ✅ TITLE FIXED CENTER */
 .title {
   position: absolute;
-  width: 100%;
-  text-align: center;
-  top: 40%;
+  top: 47%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   font-size: 45px;
   color: #fff;
   letter-spacing: 4px;
   animation: glowText 2s ease-in-out infinite alternate, fadeIn 3s ease forwards;
   opacity: 0;
+  text-align: center;
+}
+
+@media (max-width: 600px) {
+  .title {
+    font-size: 28px;
+    letter-spacing: 2px;
+  }
 }
 
 @keyframes glowText {
@@ -71,7 +79,7 @@ canvas {
   to { opacity: 1; transform: scale(1.6); }
 }
 
-/* 🌼 Hoa rơi */
+/* Hoa rơi */
 .flower {
   position: fixed;
   top: -10px;
@@ -79,7 +87,14 @@ canvas {
   animation: fall linear forwards;
 }
 
-/* 🎀 Hello Kitty rơi */
+@keyframes fall {
+  to {
+    transform: translateY(110vh) rotate(360deg);
+    opacity: 0.9;
+  }
+}
+
+/* Kitty rơi */
 .kitty {
   position: fixed;
   top: -120px;
@@ -93,13 +108,6 @@ canvas {
     opacity: 0.95;
   }
 }
-
-@keyframes fall {
-  to {
-    transform: translateY(110vh) rotate(360deg);
-    opacity: 0.9;
-  }
-}
 </style>
 </head>
 
@@ -111,7 +119,8 @@ canvas {
 </div>
 
 <script>
-/* ====== STAR EFFECT ====== */
+
+/* STAR EFFECT */
 function createStars() {
   for (let i = 0; i < 60; i++) {
     let star = document.createElement("div");
@@ -124,28 +133,7 @@ function createStars() {
 }
 createStars();
 
-/* 🌼 Hoa rơi */
-function createFlower() {
-  const flower = document.createElement("div");
-  flower.className = "flower";
-
-  const flowers = ["🌼","💮","✨"];
-  flower.innerHTML = flowers[Math.floor(Math.random() * flowers.length)];
-
-  flower.style.left = Math.random() * 100 + "vw";
-  flower.style.animationDuration = 6 + Math.random() * 5 + "s";
-  flower.style.fontSize = 18 + Math.random() * 18 + "px";
-  flower.style.opacity = 0.8;
-
-  document.body.appendChild(flower);
-
-  setTimeout(() => {
-    flower.remove();
-  }, 11000);
-}
-setInterval(createFlower, 500);
-
-/* ====== HEART PARTICLE SYSTEM ====== */
+/* HEART PARTICLE SYSTEM */
 
 var settings = {
   particles: {
@@ -156,16 +144,6 @@ var settings = {
     size: 15,
   },
 };
-
-(function() {
-  var c = ["ms", "moz", "webkit", "o"];
-  for (var a = 0; a < c.length && !window.requestAnimationFrame; ++a) {
-    window.requestAnimationFrame = window[c[a] + "RequestAnimationFrame"];
-    window.cancelAnimationFrame =
-      window[c[a] + "CancelAnimationFrame"] ||
-      window[c[a] + "CancelRequestAnimationFrame"];
-  }
-})();
 
 function Point(x, y) {
   this.x = x || 0;
@@ -275,27 +253,19 @@ ParticlePool.prototype.draw = function(context,image){
     canvas.width = settings.particles.size;
     canvas.height = settings.particles.size;
 
-    function to(t){
-      var point = pointOnHeart(t);
-      point.x = settings.particles.size/2 + point.x*settings.particles.size/350;
-      point.y = settings.particles.size/2 - point.y*settings.particles.size/350;
-      return point;
-    }
-
     context.beginPath();
     var t = -Math.PI;
-    var point = to(t);
-    context.moveTo(point.x,point.y);
+    var point = pointOnHeart(t);
+    context.moveTo(settings.particles.size/2, settings.particles.size/2);
     while(t < Math.PI){
       t += 0.01;
-      point = to(t);
-      context.lineTo(point.x,point.y);
+      point = pointOnHeart(t);
+      context.lineTo(
+        settings.particles.size/2 + point.x*settings.particles.size/350,
+        settings.particles.size/2 - point.y*settings.particles.size/350
+      );
     }
     context.closePath();
-
-    /* 💛 TIM VÀNG PASTEL */
-    context.shadowBlur = 25;
-    context.shadowColor = "#ffe699";
     context.fillStyle = "#ffd966";
     context.fill();
 
@@ -335,33 +305,6 @@ ParticlePool.prototype.draw = function(context,image){
   },10);
 
 })(document.getElementById("pinkboard"));
-
-/* 🎀 NHIỀU HELLO KITTY RƠI  */
-
-const kittyImages = [
-  "https://pngimg.com/uploads/hello_kitty/hello_kitty_PNG47.png"
-];
-
-function createKitty() {
-  const kitty = document.createElement("img");
-  kitty.className = "kitty";
-
-  // chọn ngẫu nhiên 1 hình
-  kitty.src = kittyImages[Math.floor(Math.random() * kittyImages.length)];
-
-  kitty.style.left = Math.random() * 100 + "vw";
-  kitty.style.animationDuration = 6 + Math.random() * 6 + "s";
-  kitty.style.width = 40 + Math.random() * 40 + "px";
-
-  document.body.appendChild(kitty);
-
-  setTimeout(() => {
-    kitty.remove();
-  }, 12000);
-}
-
-// tăng mật độ rơi
-setInterval(createKitty, 600);
 
 </script>
 
